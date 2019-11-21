@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+
+const resolveNeededTasks = require("../lib").resolveNeededTasks;
+const docopt = require('docopt').docopt;
+
+const doc = "\
+Usage:\n\
+  hfrecover <recovery_log_file> <output_log_file>\n\
+  hfrecover -h | --help";
+
+const opts = docopt(doc);
+
+console.info("       Recovery log file: " + opts["<recovery_log_file>"]);
+console.info("Output Recovery log file: " + opts["<output_log_file>"]);
+
+resolveNeededTasks(opts["<recovery_log_file>"], opts["<output_log_file>"]);
