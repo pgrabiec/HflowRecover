@@ -71,5 +71,5 @@ describe('PersistenceLogInputOutput', function () {
         ]);
         const expectedTrace = new ExecutionTrace([], [traceLogJsonList[0]], [process1, process2], [signal1, signal2, signal3], expectedProcessIdentifierToOriginalMetadata);
         assert.deepStrictEqual(parsed, expectedTrace);
-    })
+    });
 });
