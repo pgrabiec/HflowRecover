@@ -2,5 +2,5 @@
 
 ## How to use
 
-### Resolve tasks needing (re-)execution through generating updated workflow execution trace log file:
-* Command: ```/bin/hfrecover```
+### Resolve tasks needing re-execution through generating updated workflow execution trace log file:
+* See the usage of the command: ```bin/hfrecover --help```

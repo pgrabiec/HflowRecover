@@ -4,6 +4,25 @@ const resolveNeededTasks = require("../lib").resolveNeededTasks;
 const docopt = require('docopt').docopt;
 
 const doc = "\
+This command can be used to analyze Hyperflow workflow management system's execution trace log files.\
+It takes one persistence log as input and produces one, extended output persistence log file with an additional data.\
+The data can be further consumed by the Hyperflow workflow management system when resuming work, recovering from error\
+or re-executing because of changed inputs.\n\
+\n\
+This command determines whether a workflow signal is up-to-date based on the 'name' property of a signal - assumed \
+to be the file name that stands for the signal value. If the file exists, the signal is considered up-to-date. \
+The files are checked to be present in the directory determined in the following, consecutive places (first non-empty value is chosen):\n\
+- <data_directory> passed through the parameter: --data-directory\n\
+- 'workDir' property of a concrete signal\n\
+- The working directory of workflow - taken from the first persistence line having type 'info', i.e. infoJson['1'][1]\n\
+\n\
+The functionality of determining which processes to rerun when some signal (e.g. input) changes is configured\
+by the file <outdated_signals_file> passed through parameter --outdated-signals. It must point to a file consisting of \
+JSON objects separated by newlines (one JSON object per line). Each JSON object in each line must contain all the metadata \
+of a signal that is changed that is same as in the input Hyperflow persistence log file, e.g.:\n\
+{'name':'signal_file.txt','_id':'1','sigIdx':1}\n\
+In the above case, all processes that have the above signal as input (directly or indirectly) will be marked to be re-executed\n\
+\n\
 Usage:\n\
   hfrecover <recovery_log_file> <output_log_file> [--data-directory <data_directory>] [--outdated-signals <outdated_signals_file>]\n\
   hfrecover -h | --help";
