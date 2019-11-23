@@ -8,6 +8,7 @@ const FiredSignal = require('../lib/persistence/model/firedSignal');
 const ExecutionTrace = require('../lib/persistence/model/executionTrace');
 const SignalIdentifier = require('../lib/persistence/model/signalIdentifier');
 const ProcessIdentifier = require('../lib/persistence/model/processIdentifier');
+const resolveNeededTasks = require('../lib/index').resolveNeededTasks;
 
 describe('PersistenceLogInputOutput', function () {
     it('Should parse persistence log correctly', function () {
@@ -55,9 +56,9 @@ describe('PersistenceLogInputOutput', function () {
         const process1 = new FiredProcess(new ProcessIdentifier(2, 3), [], []);
         const process2 = new FiredProcess(new ProcessIdentifier(8, 9), [], []);
 
-        const signal1 = new FiredSignal("input1", new SignalIdentifier(6, 7), [process1], undefined);
-        const signal2 = new FiredSignal("output1", new SignalIdentifier(4, undefined, new ProcessIdentifier(2, 5)), [process2], process1);
-        const signal3 = new FiredSignal("output2", new SignalIdentifier(10, undefined, new ProcessIdentifier(8, 11)), [], process2);
+        const signal1 = new FiredSignal("input1", new SignalIdentifier(6, 7, new ProcessIdentifier(undefined, undefined), "input1"), [process1], undefined, undefined);
+        const signal2 = new FiredSignal("output1", new SignalIdentifier(4, undefined, new ProcessIdentifier(2, 5), "output1"), [process2], process1, "workdir1");
+        const signal3 = new FiredSignal("output2", new SignalIdentifier(10, undefined, new ProcessIdentifier(8, 11), "output2"), [], process2, "workdir2");
 
         process1.inputSignals.push(signal1);
         process1.outputSignals.push(signal2);
@@ -68,7 +69,7 @@ describe('PersistenceLogInputOutput', function () {
             [process1.processIdentifier, traceLogJsonList[1]],
             [process2.processIdentifier, traceLogJsonList[2]]
         ]);
-        const expectedTrace = new ExecutionTrace([], [signal1], [process1, process2], [signal1, signal2, signal3], expectedProcessIdentifierToOriginalMetadata);
+        const expectedTrace = new ExecutionTrace([], [traceLogJsonList[0]], [process1, process2], [signal1, signal2, signal3], expectedProcessIdentifierToOriginalMetadata);
         assert.deepStrictEqual(parsed, expectedTrace);
-    });
+    })
 });

@@ -5,12 +5,14 @@ const docopt = require('docopt').docopt;
 
 const doc = "\
 Usage:\n\
-  hfrecover <recovery_log_file> <output_log_file>\n\
+  hfrecover <recovery_log_file> <output_log_file> [--data-directory <data_directory>] [--outdated-signals <outdated_signals_file>]\n\
   hfrecover -h | --help";
 
 const opts = docopt(doc);
 
 console.info("       Recovery log file: " + opts["<recovery_log_file>"]);
 console.info("Output Recovery log file: " + opts["<output_log_file>"]);
+console.info(" Data directory override: " + opts["<data_directory>"]);
+console.info("   Outdated signals file: " + opts["<outdated_signals_file>"]);
 
-resolveNeededTasks(opts["<recovery_log_file>"], opts["<output_log_file>"]);
+resolveNeededTasks(opts["<recovery_log_file>"], opts["<output_log_file>"], opts["<data_directory>"], opts["<outdated_signals_file>"]);
